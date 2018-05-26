@@ -1,0 +1,20 @@
+thj<-read.csv2("household_power_consumption.txt")
+date<-as.character(thj$Date)
+time<-as.character(thj$Time)
+thj$Date<-as.Date(thj$Date,"%d/%m/%Y")
+req<-paste(date,time)
+library(lubridate)
+req<-dmy_hms(req)
+a<-"2007-02-01"
+a<-as.Date(a)
+b<-"2007-02-02"
+b<-as.Date(b)
+logic<-a<=thj$Date&b>=thj$Date
+table(logic)
+thj<-thj[logic,]
+req<-req[logic]
+globalpower<-as.numeric(as.character(thj$Global_active_power))
+globalpower<-globalpower
+png("plot1.png")
+hist(globalpower, xlab = "Global Active Power(Kilowatts)", ylab = "Frequency", main = "Global Active Power", col = "red")
+dev.off()
